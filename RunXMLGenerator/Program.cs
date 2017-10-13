@@ -10,6 +10,11 @@ namespace RunXMLGenerator
     {
         static void Main(string[] args)
         {
+            FootRaceData fd = new FootRaceData("Földrengető futás", 12, 50, 100);
+
+            fd.GenerateFootRaceXML();
+
+            Console.ReadLine();
         }
     }
 }

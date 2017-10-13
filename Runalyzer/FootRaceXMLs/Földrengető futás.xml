@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<FootRaceData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <EventName>Földrengető futás</EventName>
+  <Length>12</Length>
+  <NumberOfCompetitors>50</NumberOfCompetitors>
+  <Timestep>100</Timestep>
+</FootRaceData>
