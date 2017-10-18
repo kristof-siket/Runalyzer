@@ -41,14 +41,13 @@ namespace RunXMLGenerator
             }
         }
 
-        public FootRaceData()
+        public FootRaceData()   // hogy szerializálható legyen
         {
 
         }
 
         public void GenerateFootRaceXML()
         {
-            //  TODO: XML-t generálni a konstruktorban megadott fejléc-adatokkal, és irányított random értékekkel
             //  A versenyzőket elég rajtszámmal azonosítani, amivel elkerülhetjük a nevek beírását.
             XmlSerializer writer = new XmlSerializer(typeof(FootRaceData));
             var path = "../../../Runalyzer/FootRaceXMLs/" + EventName + ".runal.xml";

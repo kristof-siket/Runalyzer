@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runalyzer", "Runalyzer\Runa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunXMLGenerator", "RunXMLGenerator\RunXMLGenerator.csproj", "{C4DB7232-1042-43DB-BF67-0C233A18D888}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculation", "Calculation\Calculation.csproj", "{CC569911-BF5E-425D-ACEF-A12340804EA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{C4DB7232-1042-43DB-BF67-0C233A18D888}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4DB7232-1042-43DB-BF67-0C233A18D888}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4DB7232-1042-43DB-BF67-0C233A18D888}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC569911-BF5E-425D-ACEF-A12340804EA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC569911-BF5E-425D-ACEF-A12340804EA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC569911-BF5E-425D-ACEF-A12340804EA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC569911-BF5E-425D-ACEF-A12340804EA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
