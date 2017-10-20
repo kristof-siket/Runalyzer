@@ -12,11 +12,16 @@ namespace Calculation
         {
             string path = "../../../Runalyzer/FootRaceXMLs/Földrengető futás.runal.xml";
 
-            Console.WriteLine("Nyomj entert az xml feldolgozásához");
+            Console.WriteLine("Nyomj entert az xml fejléc feldolgozásához");
             Console.ReadLine();
 
             Console.WriteLine("HEADER:");
             RunDataProcessor.GetXMLHeader(path);
+
+            Console.WriteLine("Nyomj entert az indulók listázásához");
+            Console.ReadLine();
+
+            RunDataProcessor.GetCompetitorRecords(path);
 
             Console.ReadLine();
         }
