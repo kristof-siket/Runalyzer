@@ -77,7 +77,7 @@ namespace RunXMLGenerator
             int i = 1;
             while (hatralevoIdo > 0)
             {
-                float ujTavolsag = (comp.Bejegyzesek[i - 1].tavolsag + (float)(alaptempo * freshness * raceCondition));
+                float ujTavolsag = (comp.Bejegyzesek[i - 1].tavolsag + (float)(alaptempo * freshness * raceCondition)) * ((float)rnd.Next(950,1300) / 1000);
                 int ujPulzus = (comp.Bejegyzesek[i - 1].pulse < 175 ? rnd.Next(comp.Bejegyzesek[i - 1].pulse - 1, comp.Bejegyzesek[i - 1].pulse + 3) : rnd.Next(comp.Bejegyzesek[i - 1].pulse - 2, comp.Bejegyzesek[i - 1].pulse + 2));
                 comp.Bejegyzesek.Add(new Rekord(ujTavolsag, ujPulzus));
                 freshness -= tiring;

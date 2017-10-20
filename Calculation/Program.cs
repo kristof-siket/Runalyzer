@@ -21,12 +21,17 @@ namespace Calculation
             Console.ReadLine();
 
             Console.WriteLine("HEADER:");
-            processor.GetXMLHeader(path);
+            string[] header = processor.GetXMLHeader();
 
-
+            foreach (string s in header)
+            {
+                Console.WriteLine(s);
+            }
 
             Console.WriteLine("Nyomj entert az indulók listázásához");
             Console.ReadLine();
+
+            float elozo = 0;
 
             foreach (var node in processor.EnumerateAxis("Rekord"))
             {
@@ -41,6 +46,9 @@ namespace Calculation
                 }
                 Rekord r = new Rekord(tavolsag, pulse);
                 Console.WriteLine(r);
+                Console.WriteLine("Sebesség: " + processor.GetCurrentSpeed(100, tavolsag, elozo));
+                Console.WriteLine();
+                elozo = tavolsag;
             }
 
             Console.ReadLine();

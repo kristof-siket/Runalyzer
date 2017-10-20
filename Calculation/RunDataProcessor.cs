@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,6 +12,7 @@ namespace Calculation
 {
     public class RunDataProcessor
     {
+
         private XmlTextReader xreader;
         string fname;
 
@@ -20,44 +22,51 @@ namespace Calculation
             this.fname = fname;
         }
 
-        public void GetXMLHeader(string fname)
+        public void WriteAllData()
+        {
+            xreader = new XmlTextReader(fname);
+            while (xreader.Read() && xreader.Name != "Comps")
+                Console.WriteLine(xreader.Name + ": " + xreader.Value); Thread.Sleep(1000);
+        }
+
+        public string GetTimeStep()
+        {
+            xreader = new XmlTextReader(fname);
+            string timestep = "";
+            while (xreader.Read())
+            {
+                if (xreader.Name == "Timestep")
+                    return xreader.Value;
+            }
+            return timestep;
+        }
+
+        public string[] GetXMLHeader()
         {
             // TODO: xml-linq-val megcsinalni, hogy rendes hasznalhato formatumba jojjenek az adatok valami structba vagy ilyesmi
             xreader = new XmlTextReader(fname);
+            xreader.WhitespaceHandling = WhitespaceHandling.None;
 
+            int i = 0;
+            string[] s = new string[10];
             while (xreader.Read())
             {
-                if ((xreader.Name == "Comps"))
+                if (xreader.Name == "Comps" || i >= 6)
                     break;
-                Console.WriteLine(xreader.Name + " " + xreader.Value); // egyelore konzol
+                s[i] = xreader.Value.ToString();
+                i++;
             }
+            return s;
         }
 
-        public void GetCompetitorRecords(string fname)
+        public float GetCurrentSpeed(int timestep, float currentPosition, float prevPosition)
         {
-            XDocument xd = XDocument.Load(fname);
-            var competitors = from x in xd.Descendants("Competitor")
-                              select new
-                              {
-                                  Rajtszam = x.Element("Rajtszam").Value,
-                                  Bejegyzesek = x.Descendants("Bejegyzesek").AsQueryable()
-                              };
-
-            Console.WriteLine("Versenyzők: ");
-            foreach (var comp in competitors)
-            {
-                Console.WriteLine(comp.Rajtszam);
-            }
+            return ((currentPosition - prevPosition) / timestep) * 60 * 60 * 1000;
         }
-
-        //public string GetCurrentSpeedData()
-        //{
-        //    xreader.MoveToContent();
-        //    while (xreader.Read())
-        //}
 
         public IEnumerable<XElement> EnumerateAxis(string axis)
         {
+            xreader = new XmlTextReader(fname);
             xreader.MoveToContent();
             while (xreader.Read())
             {
