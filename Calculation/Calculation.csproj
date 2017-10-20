@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RunXMLGenerator\RunXMLGenerator.csproj">
+      <Project>{c4db7232-1042-43db-bf67-0c233a18d888}</Project>
+      <Name>RunXMLGenerator</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RunXMLGenerator
@@ -15,6 +16,12 @@ namespace RunXMLGenerator
         {
             this.tavolsag = tavolsag;
             this.pulse = pulse;
+        }
+
+        public override string ToString()
+        {
+            Thread.Sleep(100);
+            return String.Format("Pulzus: {0}\nTávolság:{1}", pulse, tavolsag);
         }
     }
     public class Competitor

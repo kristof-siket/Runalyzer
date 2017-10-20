@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using RunXMLGenerator;
+using System.Globalization;
 
 namespace Calculation
 {
@@ -24,10 +27,21 @@ namespace Calculation
 
             Console.WriteLine("Nyomj entert az indulók listázásához");
             Console.ReadLine();
-            
-            foreach (var node in processor.EnumerateAxis("Competitor"))
+
+            foreach (var node in processor.EnumerateAxis("Rekord"))
+            {
+                float tavolsag = 0;
+                int pulse = 0;
                 foreach (var el in (node as XElement).Elements())
-                    Console.WriteLine((el as XElement).Name + " " + (el as XElement).Value);
+                {
+                    if (el.Name == "tavolsag")
+                        tavolsag = float.Parse(el.Value, CultureInfo.InvariantCulture);
+                    else
+                        pulse = int.Parse(el.Value);
+                }
+                Rekord r = new Rekord(tavolsag, pulse);
+                Console.WriteLine(r);
+            }
 
             Console.ReadLine();
         }
