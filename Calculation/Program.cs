@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Calculation
 {
@@ -10,18 +11,23 @@ namespace Calculation
     {
         static void Main(string[] args)
         {
-            string path = "../../../Runalyzer/FootRaceXMLs/Földrengető futás.runal.xml";
+            string path = "../../../Runalyzer/FootRaceXMLs/földrengető_futás.runal.xml";
+            RunDataProcessor processor = new RunDataProcessor(path);
 
             Console.WriteLine("Nyomj entert az xml fejléc feldolgozásához");
             Console.ReadLine();
 
             Console.WriteLine("HEADER:");
-            RunDataProcessor.GetXMLHeader(path);
+            processor.GetXMLHeader(path);
+
+
 
             Console.WriteLine("Nyomj entert az indulók listázásához");
             Console.ReadLine();
-
-            RunDataProcessor.GetCompetitorRecords(path);
+            
+            foreach (var node in processor.EnumerateAxis("Competitor"))
+                foreach (var el in (node as XElement).Elements())
+                    Console.WriteLine((el as XElement).Name + " " + (el as XElement).Value);
 
             Console.ReadLine();
         }

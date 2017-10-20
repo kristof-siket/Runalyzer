@@ -10,20 +10,29 @@ namespace Calculation
 {
     public class RunDataProcessor
     {
-        public static void GetXMLHeader(string fname)
+        private XmlTextReader xreader;
+        string fname;
+
+        public RunDataProcessor(string fname)
+        {
+            xreader = new XmlTextReader(fname);
+            this.fname = fname;
+        }
+
+        public void GetXMLHeader(string fname)
         {
             // TODO: xml-linq-val megcsinalni, hogy rendes hasznalhato formatumba jojjenek az adatok valami structba vagy ilyesmi
-            XmlTextReader xreader = new XmlTextReader(fname);
+            xreader = new XmlTextReader(fname);
 
             while (xreader.Read())
             {
                 if ((xreader.Name == "Comps"))
                     break;
-                Console.WriteLine("{0}: {1}", xreader.Name, xreader.Value); // egyelore konzol
+                Console.WriteLine(xreader.Name + " " + xreader.Value); // egyelore konzol
             }
         }
 
-        public static void GetCompetitorRecords(string fname)
+        public void GetCompetitorRecords(string fname)
         {
             XDocument xd = XDocument.Load(fname);
             var competitors = from x in xd.Descendants("Competitor")
@@ -37,6 +46,31 @@ namespace Calculation
             foreach (var comp in competitors)
             {
                 Console.WriteLine(comp.Rajtszam);
+            }
+        }
+
+        //public string GetCurrentSpeedData()
+        //{
+        //    xreader.MoveToContent();
+        //    while (xreader.Read())
+        //}
+
+        public IEnumerable<XElement> EnumerateAxis(string axis)
+        {
+            xreader.MoveToContent();
+            while (xreader.Read())
+            {
+                switch (xreader.NodeType)
+                {
+                    case XmlNodeType.Element:
+                        if (xreader.Name == axis)
+                        {
+                            XElement el = XElement.ReadFrom(xreader) as XElement;
+                            if (el != null)
+                                yield return el;
+                        }
+                        break;
+                }
             }
         }
     }
