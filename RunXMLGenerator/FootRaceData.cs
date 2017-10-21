@@ -14,18 +14,22 @@ namespace RunXMLGenerator
         static int COMP_COUNTER = 1; // a rajtszámokhoz kell
         static int XMLCOUNTER = 1;  // az xml-fájlnevekhez kell
         static Random rnd = new Random();
+        object tavolsagLock = new object();
+
+        private static Queue<Competitor> compQueue = new Queue<Competitor>();
 
         string eventName;
         int length;
         int numberOfCompetitors;
         int timestep;   // ez millisecundumban értendő
-        Competitor[] comps;
+        Competitor comp;
 
         public string EventName { get => eventName; set => eventName = value; }
         public int Length { get => length; set => length = value; }
         public int NumberOfCompetitors { get => numberOfCompetitors; set => numberOfCompetitors = value; }
         public int Timestep { get => timestep; set => timestep = value; }
-        public Competitor[] Comps { get => comps; set => comps = value; }
+        public Competitor Comp { get => comp;  set => comp = value;  }
+        
 
         public FootRaceData(string eventName, int length, int numberOfCompetitors, int timestep)
         {
@@ -33,12 +37,6 @@ namespace RunXMLGenerator
             this.Length = length;
             this.NumberOfCompetitors = numberOfCompetitors;
             this.Timestep = timestep;
-            this.Comps = new Competitor[NumberOfCompetitors];
-
-            for (int i = 0; i < numberOfCompetitors; i++)
-            {
-                Comps[i] = GenerateRandomCompetitor();
-            }
         }
 
         public FootRaceData()   // hogy szerializálható legyen
@@ -46,13 +44,26 @@ namespace RunXMLGenerator
 
         }
 
+        public void NextComp()
+        {
+            Comp = compQueue.Dequeue();
+        }
+
+        public void InitCompetitors()
+        {
+            for (int i = 0; i < numberOfCompetitors; i++)
+            {
+                Competitor c = GenerateRandomCompetitor();
+                compQueue.Enqueue(c);
+            }
+        }
+
         public void GenerateFootRaceXML()
         {
             //  A versenyzőket elég rajtszámmal azonosítani, amivel elkerülhetjük a nevek beírását.
             XmlSerializer writer = new XmlSerializer(typeof(FootRaceData));
-            var path = "../../../Runalyzer/FootRaceXMLs/" + EventName + ".runal.xml";
+            var path = "../../../Runalyzer/FootRaceXMLs/" + EventName + Comp.Rajtszam +  ".runal.xml";
             System.IO.FileStream file = System.IO.File.Create(path);
-
             writer.Serialize(file, this);
             file.Close();
         }
@@ -77,7 +88,11 @@ namespace RunXMLGenerator
             int i = 1;
             while (hatralevoIdo > 0)
             {
-                float ujTavolsag = (comp.Bejegyzesek[i - 1].tavolsag + (float)(alaptempo * freshness * raceCondition)) * ((float)rnd.Next(950,1300) / 1000);
+                float ujTavolsag = 0;
+                lock (tavolsagLock)
+                {
+                    ujTavolsag = (comp.Bejegyzesek[i - 1].tavolsag + (float)(alaptempo * freshness * raceCondition) * ((float)rnd.Next(980, 1020) / 1000)); 
+                }
                 int ujPulzus = (comp.Bejegyzesek[i - 1].pulse < 175 ? rnd.Next(comp.Bejegyzesek[i - 1].pulse - 1, comp.Bejegyzesek[i - 1].pulse + 3) : rnd.Next(comp.Bejegyzesek[i - 1].pulse - 2, comp.Bejegyzesek[i - 1].pulse + 2));
                 comp.Bejegyzesek.Add(new Rekord(ujTavolsag, ujPulzus));
                 freshness -= tiring;

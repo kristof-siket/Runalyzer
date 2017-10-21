@@ -14,7 +14,7 @@ namespace Calculation
     {
         static void Main(string[] args)
         {
-            string path = "../../../Runalyzer/FootRaceXMLs/földrengető_futás.runal.xml";
+            string path = "../../../Runalyzer/FootRaceXMLs/földrengető_futás101.runal.xml";
             RunDataProcessor processor = new RunDataProcessor(path);
 
             Console.WriteLine("Nyomj entert az xml fejléc feldolgozásához");
@@ -33,7 +33,7 @@ namespace Calculation
 
             float elozo = 0;
 
-            foreach (var node in processor.EnumerateAxis("Rekord"))
+            foreach(var node in processor.EnumerateAxis("Rekord"))
             {
                 float tavolsag = 0;
                 int pulse = 0;
@@ -46,7 +46,7 @@ namespace Calculation
                 }
                 Rekord r = new Rekord(tavolsag, pulse);
                 Console.WriteLine(r);
-                Console.WriteLine("Sebesség: " + processor.GetCurrentSpeed(100, tavolsag, elozo));
+                Console.WriteLine("Sebesség: " + processor.GetCurrentSpeed(100, tavolsag, elozo) + " km/h");
                 Console.WriteLine();
                 elozo = tavolsag;
             }

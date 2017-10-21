@@ -21,7 +21,7 @@ namespace RunXMLGenerator
         public override string ToString()
         {
             Thread.Sleep(100);
-            return String.Format("Pulzus: {0}\nTávolság:{1}", pulse, tavolsag);
+            return String.Format("Pulzus: {0} bpm\nTávolság: {1} km", pulse, tavolsag);
         }
     }
     public class Competitor

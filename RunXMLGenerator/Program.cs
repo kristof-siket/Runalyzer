@@ -11,12 +11,17 @@ namespace RunXMLGenerator
         static void Main(string[] args)
         {
             FootRaceData fd = new FootRaceData("földrengető_futás", 12, 50, 100);
+            fd.InitCompetitors();
 
-            Console.WriteLine("XML fájl elkészítése...");
+            Console.WriteLine("XML-állományok készítése....");
 
-            fd.GenerateFootRaceXML();
+            for (int i = 0; i < fd.NumberOfCompetitors; i++)
+            {
+                fd.NextComp();
+                fd.GenerateFootRaceXML(); 
+            }
 
-            Console.WriteLine("Kész az XML állomány, kilépéshez nyomjon meg egy billentyűt!");
+            Console.WriteLine("Kész az XML állományok, kilépéshez nyomjon meg egy billentyűt!");
 
             Console.ReadLine();
         }
