@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -95,6 +96,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="FootRaceXMLs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Calculation\Calculation.csproj">
+      <Project>{cc569911-bf5e-425d-acef-a12340804ea6}</Project>
+      <Name>Calculation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

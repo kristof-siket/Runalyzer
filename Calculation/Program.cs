@@ -14,43 +14,17 @@ namespace Calculation
     {
         static void Main(string[] args)
         {
-            string path = "../../../Runalyzer/FootRaceXMLs/földrengető_futás101.runal.xml";
-            RunDataProcessor processor = new RunDataProcessor(path);
+            RunDataProcessor processor = new RunDataProcessor();
 
-            Console.WriteLine("Nyomj entert az xml fejléc feldolgozásához");
+            Console.WriteLine("Nyomj entert a feldolgozás megkezdéséhez!");
             Console.ReadLine();
 
-            Console.WriteLine("HEADER:");
-            string[] header = processor.GetXMLHeader();
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Dokumentumok előkészítése..");
+            Console.ForegroundColor = ConsoleColor.White;
 
-            foreach (string s in header)
-            {
-                Console.WriteLine(s);
-            }
-
-            Console.WriteLine("Nyomj entert az indulók listázásához");
-            Console.ReadLine();
-
-            float elozo = 0;
-
-            foreach(var node in processor.EnumerateAxis("Rekord"))
-            {
-                float tavolsag = 0;
-                int pulse = 0;
-                foreach (var el in (node as XElement).Elements())
-                {
-                    if (el.Name == "tavolsag")
-                        tavolsag = float.Parse(el.Value, CultureInfo.InvariantCulture);
-                    else
-                        pulse = int.Parse(el.Value);
-                }
-                Rekord r = new Rekord(tavolsag, pulse);
-                Console.WriteLine(r);
-                Console.WriteLine("Sebesség: " + processor.GetCurrentSpeed(100, tavolsag, elozo) + " km/h");
-                Console.WriteLine();
-                elozo = tavolsag;
-            }
-
+            processor.ProduceProcessingTasks();
+            
             Console.ReadLine();
         }
     }
