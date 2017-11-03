@@ -23,8 +23,29 @@ namespace Calculation
             Console.WriteLine("Dokumentumok előkészítése..");
             Console.ForegroundColor = ConsoleColor.White;
 
-            processor.ProduceProcessingTasks();
-            
+            new Task(() => processor.ProduceProcessingTasks(), TaskCreationOptions.LongRunning).Start();
+
+            new Task(() =>
+            {
+                processor.ConsumeSpeed(1);
+            }, TaskCreationOptions.LongRunning).Start();
+
+            new Task(() =>
+            {
+                processor.ConsumeSpeed(2);
+            }, TaskCreationOptions.LongRunning).Start();
+
+            new Task(() =>
+            {
+                processor.ConsumeSpeed(3);
+            }, TaskCreationOptions.LongRunning).Start();
+
+            new Task(() =>
+            {
+                processor.ConsumeSpeed(4);
+            }, TaskCreationOptions.LongRunning).Start();
+
+
             Console.ReadLine();
         }
     }

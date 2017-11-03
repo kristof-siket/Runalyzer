@@ -5,9 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using Calculation;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Runalyzer
 {
+    public abstract class Bindable : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OPC([CallerMemberName]string n = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(n));
+        }
+    }
+
     public struct BindingData
     {
         private float tavolsag;
@@ -24,18 +36,30 @@ namespace Runalyzer
 
         public float Tavolsag { get => tavolsag; set => tavolsag = value; }
         public int Pulse { get => pulse; set => pulse = value; }
-  
+        public float CurrentSpeed { get => currentSpeed; set => currentSpeed = value; }
     }
 
-    class ViewModel
+    class ViewModel : Bindable
     {
         private RunDataProcessor processor;
         private List<ObservableCollection<BindingData>> sourceDataCollections;
 
+        private static ViewModel _peldany;
+
+        public RunDataProcessor Processor { get => processor; set => processor = value; }
+        public List<ObservableCollection<BindingData>> SourceDataCollections { get { return sourceDataCollections; } set  { sourceDataCollections = value; OPC(); } }
+
         private ViewModel()
         {
-            this.processor = new RunDataProcessor();
-            this.sourceDataCollections = new List<ObservableCollection<BindingData>>();
+            this.Processor = new RunDataProcessor();
+            this.SourceDataCollections = new List<ObservableCollection<BindingData>>();
+        }
+
+        public static ViewModel Get()
+        {
+            if (_peldany == null)
+                _peldany = new ViewModel();
+            return _peldany;
         }
     }
 }

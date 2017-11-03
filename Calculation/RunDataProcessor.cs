@@ -21,7 +21,15 @@ namespace Calculation
         private XmlTextReader xreader;
         static SemaphoreSlim sem = new SemaphoreSlim(4);
         object fileNameLock = new object();
-        private ConcurrentQueue<IQueryable> documentBuffer = new ConcurrentQueue<IQueryable>();
+        private ConcurrentQueue<IQueryable<Rekord>> documentBuffer = new ConcurrentQueue<IQueryable<Rekord>>();
+        public bool IsProductionReady = false;
+        
+        public bool IsQueueEmpty // ondöflaj
+        {
+            get { return documentBuffer.IsEmpty; }
+        }
+
+        
 
         public string GetTimeStep(string fname)
         {
@@ -43,22 +51,53 @@ namespace Calculation
                 documentBuffer.Enqueue(this.LoadXMLRecordsToQueryable(file));
                 Console.WriteLine(Path.GetFileName(file) + "készen áll a feldolgozásra!");
             }
+            IsProductionReady = true;
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("A termelés véget ért.");
             Console.ForegroundColor = ConsoleColor.White;
+
         }
 
-        private IQueryable LoadXMLRecordsToQueryable(string sourcepath)
+        private IQueryable<Rekord> LoadXMLRecordsToQueryable(string sourcepath)
         {
             XDocument xd = XDocument.Load(sourcepath);
 
-            IQueryable sourceRecords = (from x in xd.Descendants("Rekord")
-                                        select new
+            IQueryable<Rekord> sourceRecords = (from x in xd.Descendants("Rekord")
+                                        select new Rekord
                                         {
-                                            Tavolsag = float.Parse(x.Element("tavolsag").Value, CultureInfo.InvariantCulture),
-                                            Pulse = int.Parse(x.Element("pulse").Value)
+                                            tavolsag = float.Parse(x.Element("tavolsag").Value, CultureInfo.InvariantCulture),
+                                            pulse = int.Parse(x.Element("pulse").Value)
                                         }).AsQueryable();
             return sourceRecords;
+        }
+
+        public void ConsumeSpeed(int taskno)
+        {
+            while (!(this.IsProductionReady && this.IsQueueEmpty))
+            {
+                IQueryable<Rekord> ujLista;
+                if (documentBuffer.TryDequeue(out ujLista))
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(taskno + ": Egy doksit elkezdtem! ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    float elozo = 0;
+                    int iterations = 0;
+                    float a = 0;
+                    float avg = 0;
+                    foreach (Rekord elem in ujLista)
+                    {
+                        a = GetCurrentSpeed(100, elem.tavolsag, elozo);
+                        elozo = elem.tavolsag;
+                        avg = (avg == 0 ? a : (avg + a) / 2);
+                        iterations++;
+                    }
+                    Thread.Sleep(1000); // egyelőre
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.WriteLine(taskno + ": Egy doksi feldolgozva! ({0} lépés), átlagsebesség: {1} km/h ", iterations, a);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+            }
         }
 
         public List<string> CreateResultsList(string sourcefilename)
