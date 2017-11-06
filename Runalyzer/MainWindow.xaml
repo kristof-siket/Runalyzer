@@ -5,8 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Runalyzer"
         mc:Ignorable="d"
-        Title="Runalyzer v1.0" Height="350" Width="525">
+        Title="Runalyzer v1.0">
     <Grid>
-        
+        <ListBox Background="DimGray" ItemsSource="{Binding SumData}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="413" Height="392" Margin="178,10,169,103" RenderTransformOrigin="0.503,0.507">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <Label Content="{Binding Tavolsag}" ContentStringFormat="Megtett táv: {0} km" FontWeight="Bold" Foreground="Red"/>
+                        <Label Content="{Binding AvgSpeed}" ContentStringFormat="Átlagsebesség: {0} km/h"/>
+                        <Label Content="{Binding MaxSpeed}" ContentStringFormat="Maxsebesség: {0} km/h"/>
+                        <Label Content="{Binding MinSpeed}" ContentStringFormat="Minimum sebesség: {0} km/h"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
     </Grid>
 </Window>

@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Calculation;
+using System.Windows.Threading;
 
 namespace Runalyzer
 {
@@ -20,9 +22,36 @@ namespace Runalyzer
     /// </summary>
     public partial class MainWindow : Window
     {
+        ViewModel VM;
         public MainWindow()
         {
+            VM = ViewModel.Get();
+            this.DataContext = VM;
             InitializeComponent();
+            BindingData next;
+            object addLock = new object();
+
+            VM.Processor.CreateBindingBag();
+
+            Task a = new Task(() =>
+            {
+                while (!VM.Processor.IsConsumptionReady)
+                {
+                    if (VM.Processor.GetNextBindingData(out next))
+                    {
+                        Dispatcher.Invoke(
+                            () =>
+                            {
+                                VM.SumData.Add(next);
+                            }, DispatcherPriority.Normal);
+                    }
+                        
+                }
+            });
+
+            a.Start();
+
+                
         }
     }
 }

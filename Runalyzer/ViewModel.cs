@@ -20,39 +20,25 @@ namespace Runalyzer
         }
     }
 
-    public struct BindingData
-    {
-        private float tavolsag;
-        private int pulse;
-        private float currentSpeed;
-        // etc... egyéb dolgok, amiket kiszámolhatok
-
-        public BindingData(float tavolsag, int pulse, float currentSpeed)
-        {
-            this.tavolsag = tavolsag;
-            this.pulse = pulse;
-            this.currentSpeed = currentSpeed;
-        }
-
-        public float Tavolsag { get => tavolsag; set => tavolsag = value; }
-        public int Pulse { get => pulse; set => pulse = value; }
-        public float CurrentSpeed { get => currentSpeed; set => currentSpeed = value; }
-    }
 
     class ViewModel : Bindable
     {
         private RunDataProcessor processor;
         private List<ObservableCollection<BindingData>> sourceDataCollections;
+        private ObservableCollection<BindingData> sumData;
 
         private static ViewModel _peldany;
 
         public RunDataProcessor Processor { get => processor; set => processor = value; }
         public List<ObservableCollection<BindingData>> SourceDataCollections { get { return sourceDataCollections; } set  { sourceDataCollections = value; OPC(); } }
 
+        public ObservableCollection<BindingData> SumData { get => sumData; set { sumData = value; OPC(); } }
+
         private ViewModel()
         {
             this.Processor = new RunDataProcessor();
             this.SourceDataCollections = new List<ObservableCollection<BindingData>>();
+            this.SumData = new ObservableCollection<BindingData>();
         }
 
         public static ViewModel Get()
@@ -60,6 +46,11 @@ namespace Runalyzer
             if (_peldany == null)
                 _peldany = new ViewModel();
             return _peldany;
+        }
+
+        public ObservableCollection<T> ToObservableCollection<T>(IEnumerable<T> enumeration) 
+        {
+            return new ObservableCollection<T>(enumeration);
         }
     }
 }

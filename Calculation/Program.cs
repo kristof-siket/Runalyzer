@@ -45,7 +45,6 @@ namespace Calculation
                 processor.ConsumeSpeed(4);
             }, TaskCreationOptions.LongRunning).Start();
 
-
             Console.ReadLine();
         }
     }
