@@ -12,7 +12,6 @@ namespace RunXMLGenerator
     public class FootRaceData
     {
         static int COMP_COUNTER = 1; // a rajtszámokhoz kell
-        static int XMLCOUNTER = 1;  // az xml-fájlnevekhez kell
         static Random rnd = new Random();
         object tavolsagLock = new object();
 

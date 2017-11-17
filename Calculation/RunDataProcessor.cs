@@ -14,8 +14,9 @@ using System.Diagnostics;
 
 namespace Calculation
 {
-    public struct BindingData
+    public class BindingData
     {
+        private int rajtszam;
         private float tavolsag;
         private int pulse;
         private float currentSpeed;
@@ -23,14 +24,21 @@ namespace Calculation
         private float maxSpeed;
         private float minSpeed;
 
-        public BindingData(float tavolsag, int pulse, float currentSpeed, float avgSpeed, float maxSpeed, float minSpeed)
+        private List<float> pulses;
+        private List<float> speeds;
+
+        public BindingData(float tavolsag, int pulse, float currentSpeed, float avgSpeed, float maxSpeed, float minSpeed, int rajtszam, List<float> pulses, List<float> speeds)
         {
+            this.rajtszam = rajtszam;
             this.tavolsag = tavolsag;
             this.pulse = pulse;
             this.currentSpeed = currentSpeed;
             this.avgSpeed = avgSpeed;
             this.maxSpeed = maxSpeed;
             this.minSpeed = minSpeed;
+
+            this.speeds = speeds;
+            this.pulses = pulses;
         }
 
         // etc... egyéb dolgok, amiket kiszámolhatok
@@ -41,6 +49,9 @@ namespace Calculation
         public float AvgSpeed { get => avgSpeed; set => avgSpeed = value; }
         public float MaxSpeed { get => maxSpeed; set => maxSpeed = value; }
         public float MinSpeed { get => minSpeed; set => minSpeed = value; }
+        public int Rajtszam { get => rajtszam; set => rajtszam = value; }
+        public List<float> Pulses { get => pulses; set => pulses = value; }
+        public List<float> Speeds { get => speeds; set => speeds = value; }
     }
 
     public class RunDataProcessor
@@ -49,7 +60,6 @@ namespace Calculation
         static string RESULT_DIRECTORY = "../../../Runalyzer/Results/";
 
         private XmlTextReader xreader;
-        static SemaphoreSlim sem = new SemaphoreSlim(4);
         object fileNameLock = new object();
         private ConcurrentQueue<XDocument> documentBuffer = new ConcurrentQueue<XDocument>();
         private ConcurrentBag<BindingData> bindingBag = new ConcurrentBag<BindingData>();
@@ -85,10 +95,12 @@ namespace Calculation
                 Console.WriteLine(Path.GetFileName(file) + " készen áll a feldolgozásra! ({0} ms)", sw1.ElapsedMilliseconds);
                 sw1.Reset();
             }
-            IsProductionReady = true;
+     
             Console.ForegroundColor = ConsoleColor.Blue;
             Console.WriteLine("A termelés véget ért.");
             Console.ForegroundColor = ConsoleColor.White;
+
+            IsProductionReady = true;
 
         }
 
@@ -143,9 +155,15 @@ namespace Calculation
                     {
                         sw1.Restart(); 
                     }
+
+                    List<float> currSpeeds = new List<float>();
+                    List<float> currPulses = new List<float>();
+
                     foreach (Rekord elem in sourceRecords)
                     {
                         spd = GetCurrentSpeed(100, elem.tavolsag, elozo);
+                        currSpeeds.Add(spd);
+                        currPulses.Add(elem.pulse);
                         elozo = elem.tavolsag;
                         acc = spd - elozospd;
                         pre = (acc > 0 ? "Gyorsulás: " : "Lassulás");
@@ -156,7 +174,8 @@ namespace Calculation
                         elozospd = spd;
                         iterations++;
                     }
-                    bindingBag.Add(new BindingData(sourceRecords.Last().tavolsag, sourceRecords.Last().pulse, 0, avg, max, min));
+                    bindingBag.Add(new BindingData(sourceRecords.Last().tavolsag, sourceRecords.Last().pulse, 0, avg, max, min, int.Parse(rajtszam), currSpeeds, currPulses));
+                    bindingBag.OrderBy(x => x.Tavolsag).Distinct();
                     sw1.Stop();
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     Console.WriteLine(taskno + ": {2} versenyző feldolgozva ({0} ms alatt), átlag: {1} km/h, max: {3} km/h, min: {4} km/h", sw1.ElapsedMilliseconds, avg, rajtszam, max, min);
@@ -170,7 +189,7 @@ namespace Calculation
         {
             new Task(() => ProduceProcessingTasks(), TaskCreationOptions.LongRunning).Start();
 
-            Task[] tasks = new Task[4];
+            Task[] tasks = new Task[2];
 
             for (int i = 0; i < tasks.Length; i++)
             {
@@ -209,8 +228,6 @@ namespace Calculation
 
             return vissza;
         }
-
-
 
         public void SendResultsToTextFileLinq(string sourcefilename, string destfilename)
         {

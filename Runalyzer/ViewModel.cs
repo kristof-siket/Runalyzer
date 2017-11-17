@@ -26,6 +26,7 @@ namespace Runalyzer
         private RunDataProcessor processor;
         private List<ObservableCollection<BindingData>> sourceDataCollections;
         private ObservableCollection<BindingData> sumData;
+        private BindingData selectedItem;
 
         private static ViewModel _peldany;
 
@@ -33,6 +34,7 @@ namespace Runalyzer
         public List<ObservableCollection<BindingData>> SourceDataCollections { get { return sourceDataCollections; } set  { sourceDataCollections = value; OPC(); } }
 
         public ObservableCollection<BindingData> SumData { get => sumData; set { sumData = value; OPC(); } }
+        public BindingData SelectedItem { get { return selectedItem; } set { selectedItem = value; OPC(); } }
 
         private ViewModel()
         {
