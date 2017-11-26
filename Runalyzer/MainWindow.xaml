@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Runalyzer v1.0" Height="521.72" Width="800.252">
     <Grid>
-        <ListBox Background="DimGray" ItemsSource="{Binding SumData}" SelectedItem="{Binding SelectedItem}"  Width="413" Height="383" Margin="10,19,337,54" RenderTransformOrigin="0.503,0.507">
+        <ListBox Background="DimGray" ItemsSource="{Binding SumData}" SelectedItem="{Binding SelectedItem}" Height="383" Margin="26,37,10,72" RenderTransformOrigin="0.503,0.507">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -21,7 +21,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button x:Name="btnPaint" Content="Kijelölt rajzolása" HorizontalAlignment="Left" Margin="155,425,0,0" VerticalAlignment="Top" Width="138" Height="39" RenderTransformOrigin="0.558,1.595" Click="Button_Click"/>
+        <Button x:Name="btnPaint" Content="Kijelölt rajzolása" HorizontalAlignment="Left" Margin="329,425,0,0" VerticalAlignment="Top" Width="138" Height="39" RenderTransformOrigin="0.558,1.595" Click="Button_Click"/>
 
 
     </Grid>

@@ -38,7 +38,8 @@ namespace Runalyzer
 
             Task a = new Task(() =>
             {
-                while (!VM.Processor.IsConsumptionReady || !VM.Processor.IsQueueEmpty || !VM.Processor.IsProductionReady)
+                //while (!VM.Processor.IsConsumptionReady)
+                while (true)
                 {
                     if (VM.Processor.GetNextBindingData(out next))
                     {
@@ -46,13 +47,15 @@ namespace Runalyzer
                             () =>
                             {
                                 VM.SumData.Add(next);
+                                VM.SumData = VM.ToObservableCollection<BindingData>(VM.SumData.OrderBy(x => x.Rajtszam));
                             }, DispatcherPriority.Normal);
                     }
                         
                 }
             });
 
-            a.Start();    
+            a.Start();
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -67,7 +70,7 @@ namespace Runalyzer
                 {
                     avg_speed = (avg_speed == 0 ? VM.SelectedItem.Speeds[i] : (avg_speed + VM.SelectedItem.Speeds[i]) / 2);
                     avg_pulse = (avg_pulse == 0 ? VM.SelectedItem.Pulses[i] : (avg_pulse + VM.SelectedItem.Pulses[i]) / 2);
-                    if (i % 600 == 0) // kicsit redukálom az adatmennyiséget
+                    if (i % 60 == 0) // kicsit redukálom az adatmennyiséget
                     {
                         speed_points.Add(new Point(i, avg_speed)); // adott percre vonatkozó átlagot nézem 
                         pulse_points.Add(new Point(i, avg_pulse));

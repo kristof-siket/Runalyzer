@@ -90,7 +90,7 @@ namespace RunXMLGenerator
                 float ujTavolsag = 0;
                 lock (tavolsagLock)
                 {
-                    ujTavolsag = (comp.Bejegyzesek[i - 1].tavolsag + (float)(alaptempo * freshness * raceCondition) * ((float)rnd.Next(980, 1020) / 1000)); 
+                    ujTavolsag = (comp.Bejegyzesek[i - 1].tavolsag + (float)(alaptempo * freshness * raceCondition) * ((float)rnd.Next(980, 1020) / (100000 / timestep))); 
                 }
                 int ujPulzus = (comp.Bejegyzesek[i - 1].pulse < 175 ? rnd.Next(comp.Bejegyzesek[i - 1].pulse - 1, comp.Bejegyzesek[i - 1].pulse + 3) : rnd.Next(comp.Bejegyzesek[i - 1].pulse - 2, comp.Bejegyzesek[i - 1].pulse + 2));
                 comp.Bejegyzesek.Add(new Rekord(ujTavolsag, ujPulzus));

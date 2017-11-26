@@ -161,7 +161,7 @@ namespace Calculation
 
                     foreach (Rekord elem in sourceRecords)
                     {
-                        spd = GetCurrentSpeed(100, elem.tavolsag, elozo);
+                        spd = GetCurrentSpeed(int.Parse(header.Timestep), elem.tavolsag, elozo);
                         currSpeeds.Add(spd);
                         currPulses.Add(elem.pulse);
                         elozo = elem.tavolsag;
@@ -189,7 +189,8 @@ namespace Calculation
         {
             new Task(() => ProduceProcessingTasks(), TaskCreationOptions.LongRunning).Start();
 
-            Task[] tasks = new Task[2];
+            int TASK_COUNT = Environment.ProcessorCount;
+            Task[] tasks = new Task[TASK_COUNT];
 
             for (int i = 0; i < tasks.Length; i++)
             {

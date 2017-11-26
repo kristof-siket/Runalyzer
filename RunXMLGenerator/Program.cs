@@ -10,7 +10,7 @@ namespace RunXMLGenerator
     {
         static void Main(string[] args)
         {
-            FootRaceData fd = new FootRaceData("földrengető_futás", 12, 50, 100);
+            FootRaceData fd = new FootRaceData("földrengető_futás", 8, 20, 1000);
             fd.InitCompetitors();
 
             Console.WriteLine("XML-állományok készítése....");
