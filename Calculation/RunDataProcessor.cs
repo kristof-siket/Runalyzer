@@ -43,15 +43,15 @@ namespace Calculation
 
         // etc... egyéb dolgok, amiket kiszámolhatok
 
-        public float Tavolsag { get => tavolsag; set => tavolsag = value; }
-        public int Pulse { get => pulse; set => pulse = value; }
-        public float CurrentSpeed { get => currentSpeed; set => currentSpeed = value; }
-        public float AvgSpeed { get => avgSpeed; set => avgSpeed = value; }
-        public float MaxSpeed { get => maxSpeed; set => maxSpeed = value; }
-        public float MinSpeed { get => minSpeed; set => minSpeed = value; }
-        public int Rajtszam { get => rajtszam; set => rajtszam = value; }
-        public List<float> Pulses { get => pulses; set => pulses = value; }
-        public List<float> Speeds { get => speeds; set => speeds = value; }
+        public float Tavolsag { get { return tavolsag; } set { tavolsag = value; } }
+        public int Pulse { get { return pulse; } set { pulse = value; } }
+        public float CurrentSpeed { get { return currentSpeed; } set { currentSpeed = value; } }
+        public float AvgSpeed { get { return avgSpeed; } set { avgSpeed = value; } }
+        public float MaxSpeed { get { return maxSpeed; } set { maxSpeed = value; } }
+        public float MinSpeed { get { return minSpeed; } set { minSpeed = value; } }
+        public int Rajtszam { get { return rajtszam; } set { rajtszam = value; } }
+        public List<float> Pulses { get { return pulses; } set { pulses = value; } }
+        public List<float> Speeds { get { return speeds; } set { speeds = value; } }
     }
 
     public class RunDataProcessor
@@ -89,10 +89,10 @@ namespace Calculation
             foreach (string file in Directory.GetFiles(SOURCE_DIRECTORY))
             {
                 sw1.Start();
-                Console.WriteLine(Path.GetFileName(file) + " várósorba állítása...");
+                Console.WriteLine("T: " + Path.GetFileName(file) + " várósorba állítása...");
                 documentBuffer.Enqueue(this.LoadXMLRecords(file));
                 sw1.Stop();
-                Console.WriteLine(Path.GetFileName(file) + " készen áll a feldolgozásra! ({0} ms)", sw1.ElapsedMilliseconds);
+                Console.WriteLine("T: " + Path.GetFileName(file) + " készen áll a feldolgozásra! ({0} ms)", sw1.ElapsedMilliseconds);
                 sw1.Reset();
             }
      
@@ -101,7 +101,6 @@ namespace Calculation
             Console.ForegroundColor = ConsoleColor.White;
 
             IsProductionReady = true;
-
         }
 
         private XDocument LoadXMLRecords(string sourcepath)

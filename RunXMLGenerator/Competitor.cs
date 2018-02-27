@@ -28,8 +28,8 @@ namespace RunXMLGenerator
         int rajtszam;
         List<Rekord> bejegyzesek;
 
-        public int Rajtszam { get => rajtszam; set => rajtszam = value; }
-        public List<Rekord> Bejegyzesek { get => bejegyzesek; set => bejegyzesek = value; }
+        public int Rajtszam { get { return rajtszam; } set { rajtszam = value; } }
+        public List<Rekord> Bejegyzesek { get { return bejegyzesek; } set { bejegyzesek = value; } }
     }
 
 

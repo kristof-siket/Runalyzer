@@ -47,7 +47,7 @@ namespace Runalyzer
                             () =>
                             {
                                 VM.SumData.Add(next);
-                                VM.SumData = VM.ToObservableCollection<BindingData>(VM.SumData.OrderBy(x => x.Rajtszam));
+                                VM.SumData = VM.ToObservableCollection<BindingData>(VM.SumData.OrderByDescending(x => x.Tavolsag));
                             }, DispatcherPriority.Normal);
                     }
                         

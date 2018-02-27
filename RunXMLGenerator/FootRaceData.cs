@@ -23,11 +23,11 @@ namespace RunXMLGenerator
         int timestep;   // ez millisecundumban értendő
         Competitor comp;
 
-        public string EventName { get => eventName; set => eventName = value; }
-        public int Length { get => length; set => length = value; }
-        public int NumberOfCompetitors { get => numberOfCompetitors; set => numberOfCompetitors = value; }
-        public int Timestep { get => timestep; set => timestep = value; }
-        public Competitor Comp { get => comp;  set => comp = value;  }
+        public string EventName { get { return eventName; } set { eventName = value; } }
+        public int Length { get { return length; } set { length = value; } }
+        public int NumberOfCompetitors { get { return numberOfCompetitors; } set { numberOfCompetitors = value; } }
+        public int Timestep { get { return timestep; } set { timestep = value; } }
+        public Competitor Comp { get { return comp; }  set { comp = value; } }
         
 
         public FootRaceData(string eventName, int length, int numberOfCompetitors, int timestep)

@@ -30,10 +30,10 @@ namespace Runalyzer
 
         private static ViewModel _peldany;
 
-        public RunDataProcessor Processor { get => processor; set => processor = value; }
+        public RunDataProcessor Processor { get { return processor; } set { processor = value; } }
         public List<ObservableCollection<BindingData>> SourceDataCollections { get { return sourceDataCollections; } set  { sourceDataCollections = value; OPC(); } }
 
-        public ObservableCollection<BindingData> SumData { get => sumData; set { sumData = value; OPC(); } }
+        public ObservableCollection<BindingData> SumData { get { return sumData; } set { sumData = value; OPC();  } }
         public BindingData SelectedItem { get { return selectedItem; } set { selectedItem = value; OPC(); } }
 
         private ViewModel()

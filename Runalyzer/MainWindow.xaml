@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Runalyzer"
-        xmlns:sparrowToolkit="http://sparrowtoolkit.codeplex.com/wpf" xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" xmlns:DataVisualization="clr-namespace:Eternal.DataVisualization;assembly=Eternal.DataVisualization.WPF" x:Class="Runalyzer.MainWindow"
         mc:Ignorable="d"
+        x:Class="Runalyzer.MainWindow"
         Title="Runalyzer v1.0" Height="521.72" Width="800.252">
     <Grid>
         <ListBox Background="DimGray" ItemsSource="{Binding SumData}" SelectedItem="{Binding SelectedItem}" Height="383" Margin="26,37,10,72" RenderTransformOrigin="0.503,0.507">
